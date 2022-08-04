@@ -387,6 +387,45 @@ def test_perform_rule_operation(mock_data_service):
         assert result["$unique_aestdy"].equals(pd.Series([{11, 12, 40, 59}] * len(df)))
 
 
+def test_linked_group_variable_in_dataset(
+    mock_data_service,
+):
+    ae_domain = pd.DataFrame.from_dict(
+        {
+            "AESTDY": [11, 12, 40, 59, 59],
+            "DOMAIN": ["AE", "AE", "AE", "AE", "AE"],
+            "AELNKGRP": ["V1", "V1", "V2", "V2", "V3"],
+        }
+    )
+    rule = {
+        "conditions": [],
+        "operations": [
+            {
+                "operator": "variable_exists",
+                "domain": "AE",
+                "name": "--LNKGRP",
+                "id": "$link",
+            },
+        ],
+    }
+    processor = RuleProcessor(mock_data_service, InMemoryCacheService())
+    with patch(
+        "engine.services.data_services.LocalDataService.get_dataset",
+        return_value=ae_domain,
+    ):
+        result = processor.perform_rule_operations(
+            rule,
+            ae_domain,
+            "AE",
+            [{"domain": "AE", "filename": "ae.xpt"}],
+            "test/",
+            standard="sdtmig",
+            standard_version="3-1-2",
+        )
+        assert "$link" in result
+        assert result["$link"][0] == True
+
+
 def test_perform_rule_operation_with_grouping(mock_data_service):
     conditions = {
         "all": [
