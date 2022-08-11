@@ -28,14 +28,14 @@ from engine.utilities.excel_report import ExcelReport
 from engine.utilities.excel_writer import excel_workbook_to_stream
 from engine.utilities.utils import get_rules_cache_key
 
-"""
-Sync manager used to manage instances of the cache between processes.
-Cache types are registered to this manager, and only one instance of the
-cache is created at startup and provided to each process.
-"""
-
 
 class CacheManager(SyncManager):
+    """
+    Sync manager used to manage instances of the cache between processes.
+    Cache types are registered to this manager, and only one instance of the
+    cache is created at startup and provided to each process.
+    """
+
     pass
 
 
