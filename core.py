@@ -96,6 +96,16 @@ def cli():
     default="2.1",
     help="Define-XML version used for validation",
 )
+@click.option(
+    "-ir",
+    "--include-rules",
+    help="A space-separated list of rules to be executed",
+)
+@click.option(
+    "-er",
+    "--exclude-rules",
+    help="A space-separated list of rules to be excluded from the execution",
+)
 @click.option("--whodrug", help="Path to directory with WHODrug dictionary files")
 @click.option("--meddra", help="Path to directory with MedDRA dictionary files")
 @click.pass_context
@@ -113,6 +123,8 @@ def validate(
     define_version,
     whodrug,
     meddra,
+    include_rules,
+    exclude_rules,
 ):
     """
     Validate data using CDISC Rules Engine

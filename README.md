@@ -35,6 +35,8 @@ Run `core.py validate --help` to see the list of validation options.
 * -ct, --controlled_terminology_package TEXT Controlled terminology package to validate against, can provide more than one
 * -o, --output TEXT                          Report output file destination
 * -dv, --define_version TEXT                 Define-XML version used for validation
+* -ir, --include-rules TEXT                  A space-separated list of rules to be executed
+* -er, --exclude-rules TEXT                  A space-separated list of rules to be excluded from the execution
 * --whodrug TEXT                             Path to directory with WHODrug dictionary files
 * --meddra TEXT                              Path to directory with MedDRA dictionary files
 ```
