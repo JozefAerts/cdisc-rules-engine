@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime
 from typing import List, TextIO
-from cdisc_rules_engine.models.validation_args import Validation_args
+from cdisc_rules_engine.models.validation_args import ValidationArgs
 from cdisc_rules_engine.utilities.excel_writer import excel_workbook_to_stream
 from openpyxl import Workbook
 from cdisc_rules_engine.models.rule_validation_result import RuleValidationResult
@@ -22,7 +22,7 @@ class ExcelReport(BaseReport):
         data_path: str,
         validation_results: List[RuleValidationResult],
         elapsed_time: float,
-        args: Validation_args,
+        args: ValidationArgs,
         template: TextIO,
     ):
         super().__init__(data_path, validation_results, elapsed_time, args)

@@ -29,7 +29,7 @@ from cdisc_rules_engine.services.data_services import (
     DataServiceFactory,
 )
 from cdisc_rules_engine.utilities.utils import get_rules_cache_key
-from cdisc_rules_engine.models.validation_args import Validation_args
+from cdisc_rules_engine.models.validation_args import ValidationArgs
 from cdisc_rules_engine.utilities.report_factory import ReportFactory
 
 logging.getLogger("asyncio").disabled = True
@@ -148,7 +148,7 @@ def get_cache_service(manager):
         return manager.InMemoryCacheService()
 
 
-def run_validation(args: Validation_args):
+def run_validation(args: ValidationArgs):
     set_log_level(args.log_level.lower())
     cache_path: str = f"{os.path.dirname(__file__)}/../{args.cache}"
     data_path: str = f"{os.path.dirname(__file__)}/../{args.data}"
@@ -164,9 +164,17 @@ def run_validation(args: Validation_args):
     # install dictionaries if needed
     fill_cache_with_dictionaries(shared_cache, args)
 
-    rules = shared_cache.get_all_by_prefix(
+    # load rules
+    rules: RulesEngine = shared_cache.get_all_by_prefix(
         get_rules_cache_key(args.standard, args.version.replace(".", "-"))
     )
+    if args.include_rules != None:
+        include_rules = args.include_rules.split(",")
+        rules = [rule for rule in rules if rule["core_id"] in include_rules]
+    elif args.exclude_rules != None:
+        exclude_rules = args.exclude_rules.split(",")
+        rules = [rule for rule in rules if rule["core_id"] not in exclude_rules]
+
     data_service = DataServiceFactory(config, shared_cache).get_data_service()
     datasets = get_datasets(data_service, data_path)
 

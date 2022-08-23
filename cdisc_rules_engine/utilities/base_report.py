@@ -3,7 +3,7 @@ from typing import List, Union
 from openpyxl import Workbook
 from cdisc_rules_engine.enums.execution_status import ExecutionStatus
 from cdisc_rules_engine.models.rule_validation_result import RuleValidationResult
-from cdisc_rules_engine.models.validation_args import Validation_args
+from cdisc_rules_engine.models.validation_args import ValidationArgs
 
 
 class BaseReport(ABC):
@@ -16,7 +16,7 @@ class BaseReport(ABC):
         data_path: str,
         validation_results: List[RuleValidationResult],
         elapsed_time: float,
-        args: Validation_args,
+        args: ValidationArgs,
     ):
         self._data_path: str = data_path
         self._elapsed_time: int = elapsed_time

@@ -4,7 +4,7 @@ import click
 from datetime import datetime
 from multiprocessing import freeze_support
 from cdisc_rules_engine.enums.report_types import ReportTypes
-from cdisc_rules_engine.models.validation_args import Validation_args
+from cdisc_rules_engine.models.validation_args import ValidationArgs
 from scripts.run_validation import run_validation
 from scripts.update_cache import (
     load_cache_data,
@@ -94,18 +94,18 @@ def cli():
     default="2.1",
     help="Define-XML version used for validation",
 )
+@click.option("--whodrug", help="Path to directory with WHODrug dictionary files")
+@click.option("--meddra", help="Path to directory with MedDRA dictionary files")
 @click.option(
     "-ir",
     "--include-rules",
-    help="A space-separated list of rules to be executed",
+    help="A comma-separated list of rules to be executed",
 )
 @click.option(
     "-er",
     "--exclude-rules",
-    help="A space-separated list of rules to be excluded from the execution",
+    help="A comma-separated list of rules to be excluded from the execution",
 )
-@click.option("--whodrug", help="Path to directory with WHODrug dictionary files")
-@click.option("--meddra", help="Path to directory with MedDRA dictionary files")
 @click.pass_context
 def validate(
     ctx,
@@ -141,21 +141,23 @@ def validate(
         ctx.exit()
 
     run_validation(
-        Validation_args(
-            cache,
-            pool_size,
-            data,
-            log_level,
-            report_template,
-            standard,
-            version,
-            controlled_terminology_package,
-            output,
-            output_format,
-            raw_report,
-            define_version,
-            whodrug,
-            meddra,
+        ValidationArgs(
+            cache=cache,
+            pool_size=pool_size,
+            data=data,
+            log_level=log_level,
+            report_template=report_template,
+            standard=standard,
+            version=version,
+            controlled_terminology_package=controlled_terminology_package,
+            output=output,
+            output_format=output_format,
+            raw_report=raw_report,
+            define_version=define_version,
+            whodrug=whodrug,
+            meddra=meddra,
+            include_rules=include_rules,
+            exclude_rules=exclude_rules,
         )
     )
 
